@@ -87,7 +87,7 @@ const MyCart = () => {
       });
 
       const orderData = await orderResponse.json();
-console.log(orderData);
+      console.log(orderData);
       if (!orderData.success) {
         toast.error(orderData.message || "Order creation fail ho gaya!");
         return;
@@ -120,7 +120,7 @@ console.log(orderData);
           });
 
           const verifyData = await verifyResponse.json();
-console.log(verifyData);
+          console.log(verifyData);
           if (verifyData.success) {
             toast.success("Payment Successful! Course me enroll ho gaye aap 🎉");
             
@@ -255,21 +255,21 @@ console.log(verifyData);
                 </div>
               </div>
 
-              {/* PROMO COUPON CODE BLOCK */}
+              {/* PROMO COUPON CODE BLOCK (Fixed Responsive) */}
               <form onSubmit={handleApplyPromo} className="pt-2">
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <input
                     type="text"
                     placeholder="Apply Coupon (EDUPULSE500)"
                     value={promoCode}
                     onChange={(e) => setPromoCode(e.target.value)}
                     disabled={isApplied}
-                    className="flex-1 bg-slate-50 border border-slate-200 px-3 py-2 rounded-xl text-xs font-bold uppercase text-slate-700 placeholder-slate-400 focus:outline-none focus:border-indigo-500 disabled:opacity-60"
+                    className="w-full bg-slate-50 border border-slate-200 px-3 py-2 rounded-xl text-xs font-bold uppercase text-slate-700 placeholder-slate-400 focus:outline-none focus:border-indigo-500 disabled:opacity-60"
                   />
                   <button
                     type="submit"
                     disabled={isApplied || !promoCode}
-                    className="bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-800 disabled:bg-slate-200 disabled:text-slate-400 cursor-pointer transition"
+                    className="w-full sm:w-auto bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-slate-800 disabled:bg-slate-200 disabled:text-slate-400 cursor-pointer transition shrink-0"
                   >
                     Apply
                   </button>

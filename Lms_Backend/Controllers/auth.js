@@ -99,7 +99,81 @@ exports.signup = async (req, res) => {
     });
   }
 };
+exports.sendOTP = async (req, res) => {
+    try {
+        const { email } = req.body;
+        console.log(email);
+        
+        if (!email) {
+            return res.status(400).json({
+                success: false,
+                message: "Email is required",
+            });
+        }
 
+        const user = await USER.findOne({ email: email });
+        if (user) {
+            return res.status(400).json({
+                success: false,
+                message: "User already exists",
+            });
+        }
+
+        // 1. Simple 6-digit OTP generation (Bina loop ke, fast)
+        const otp = otpGenerator.generate(6, {
+            upperCaseAlphabets: false,
+            specialChars: false,
+            lowerCaseAlphabets: false,
+            numbers: true,
+        });
+        console.log("Generated OTP:", otp);
+
+        // 2. Database me OTP save karo
+        const otpData = await OTP.create({
+            email: email,
+            otp: otp,
+        });
+
+        // 🚀 3. TURANT RESPONSE BHEJ DO (Frontend ko wait nahi karna padega)
+        res.status(200).json({
+            success: true,
+            message: "OTP sent successfully",
+            data: otpData,
+        });
+
+        // 4. Email background me bhejte raho (Await hata diya taaki API block na ho)
+        mailSender(
+            email, 
+            "🔒 Verify Your LMS Account - OTP Code", 
+            `
+            <div style="background-color: #f8fafc; padding: 30px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                <div style="max-width: 500px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+                    <div style="background-color: #0f172a; padding: 24px; text-align: center;">
+                        <h1 style="color: #ffffff; margin: 0; font-size: 20px; font-weight: 900;">🎓 <span style="color: #6366f1;">LMS</span> Portal</h1>
+                    </div>
+                    <div style="padding: 30px; text-align: center;">
+                        <h2 style="color: #1e293b; font-size: 18px; font-weight: 800; margin-top: 0;">Verification Code</h2>
+                        <p style="color: #64748b; font-size: 13px; line-height: 1.5; margin-bottom: 24px;">Aapke account ke liye verification request mili hai. Niche diye gaye OTP ka use karein:</p>
+                        <div style="display: inline-block; background-color: #f1f5f9; border: 2px dashed #cbd5e1; border-radius: 12px; padding: 14px 28px; margin-bottom: 24px;">
+                            <span style="font-size: 28px; font-weight: 900; letter-spacing: 6px; color: #4f46e5;">${otp}</span>
+                        </div>
+                        <p style="color: #ef4444; font-size: 11px; font-weight: 700; margin: 0;">⏳ Yeh code sirf 5 minutes tak valid hai.</p>
+                    </div>
+                </div>
+            </div>
+            `
+        ).catch((err) => {
+            console.error("Background email sending failed:", err);
+        });
+
+    } catch (error) {
+        console.error("Error occurred while sending OTP:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+};
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -165,92 +239,7 @@ res.cookie("token", token, options).status(200).json({
 };
 
 
-exports.sendOTP = async (req, res) => {
-    try {
-        const { email } = req.body;
-console.log(email)
-        if (!email) {
-            return res.status(400).json({
-                success: false,
-                message: "Email is required",
-            });
-        }
 
-        const user = await USER.findOne({ email: email });
-if (user) {
-            return res.status(400).json({
-                success: false,
-                message: "User already exists",
-            });
-        }
-
-
-        let otp = otpGenerator.generate(6, {
-             upperCaseAlphabets: false,
-          
-             specialChars: false ,
-            lowerCaseAlphabets: false,});
-            console.log(otp)
-
-          let isOtpExists = await OTP.find({ otp: otp });
-          while (isOtpExists.length > 0) {
-            otp = otpGenerator.generate(6, {
-                upperCaseAlphabets: false,
-                specialChars: false,
-              lowerCaseAlphabets: false,  
-              numbers: true,
-                
-            });
-            isOtpExists = await OTP.find({ otp: otp });
-          }
-
-const otpData = await OTP.create({
-            email: email,
-            otp: otp,
-        });
-
-
-
-        // Send OTP email
-        await    mailSender(
-    email, 
-    "🔒 Verify Your LMS Account - OTP Code", 
-    `
-    <div style="background-color: #f8fafc; padding: 30px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-        <div style="max-width: 500px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
-            <div style="background-color: #0f172a; padding: 24px; text-align: center;">
-                <h1 style="color: #ffffff; margin: 0; font-size: 20px; font-weight: 900;">🎓 <span style="color: #6366f1;">LMS</span> Portal</h1>
-            </div>
-            <div style="padding: 30px; text-align: center;">
-                <h2 style="color: #1e293b; font-size: 18px; font-weight: 800; margin-top: 0;">Verification Code</h2>
-                <p style="color: #64748b; font-size: 13px; line-height: 1.5; margin-bottom: 24px;">Aapke account ke liye verification request mili hai. Niche diye gaye OTP ka use karein:</p>
-                <div style="display: inline-block; background-color: #f1f5f9; border: 2px dashed #cbd5e1; border-radius: 12px; padding: 14px 28px; margin-bottom: 24px;">
-                    <span style="font-size: 28px; font-weight: 900; letter-spacing: 6px; color: #4f46e5;">${otpData.otp}</span>
-                </div>
-                <p style="color: #ef4444; font-size: 11px; font-weight: 700; margin: 0;">⏳ Yeh code sirf 5 minutes tak valid hai.</p>
-            </div>
-        </div>
-    </div>
-    `
-)
-
-return res.status(200).json({
-            success: true,
-            message: "OTP sent successfully",
-            data: otpData,
-        });
-
-
-
-
-    } catch (error) {
-        console.error("Error occurred while sending OTP:", error);
-        return res.status(500).json({
-            success: false,
-            message: "Internal server error",
-        });
-    }
-}
 
 // get single user details
 exports.getUser = async (req, res) => {
@@ -394,8 +383,7 @@ exports.resetPasswordToken = async (req, res) => {
             { new: true }
         );
 
-        // ⚠️ Frontend ka URL (Port 3000 ya jo bhi aapka React/Vite port ho)
-        const url = `http://localhost:5173/update-password/${token}`;
+        const url = `${process.env.FRONTEND_URL}/update-password/${token}`;
 await mailSender(
     email,
     "Password Reset Link - LMS Portal",

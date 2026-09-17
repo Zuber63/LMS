@@ -48,94 +48,94 @@ const StudentDashboardHome = () => {
   const resumeCourseName = typeof lastEnrolledCourse === 'object' ? lastEnrolledCourse?.courseName : "Your Technical Course";
 
   return (
-    <main className="p-4 md:p-8 max-w-7xl w-full mx-auto flex-1 space-y-6">
+    <main className="p-3 sm:p-5 md:p-8 max-w-7xl w-full mx-auto flex-1 space-y-4 sm:space-y-6 overflow-x-hidden">
       
       {/* 1. WELCOME BANNER WITH MAIN HOME REDIRECT BUTTON */}
-      <div className="bg-gradient-to-br from-slate-900 via-indigo-950 to-indigo-900 text-white rounded-3xl p-6 md:p-8 shadow-lg relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="bg-gradient-to-br from-slate-900 via-indigo-950 to-indigo-900 text-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8 shadow-lg relative overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-5 sm:gap-6">
+        <div className="absolute top-0 right-0 w-60 h-60 sm:w-80 sm:h-80 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none"></div>
         
-        <div className="relative z-10 max-w-xl space-y-3">
+        <div className="relative z-10 max-w-xl space-y-2.5 sm:space-y-3">
           <span className="bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 font-bold px-3 py-1 rounded-full text-xs inline-block">
             Welcome Back, {firstName} ⚡
           </span>
-          <h2 className="text-2xl md:text-3xl font-black tracking-tight">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight leading-snug break-words">
             Ready to learn and grow today?
           </h2>
-          <p className="text-indigo-200/80 text-xs md:text-sm leading-relaxed font-medium">
+          <p className="text-indigo-200/80 text-xs md:text-sm leading-relaxed font-medium break-words">
             Aapke paas <span className="text-white font-bold">{activeCoursesCount} active courses</span> hain. Apni tech learning poori karne ke liye progress jaari rakhein!
           </p>
         </div>
 
         {/* 🏠 Main Home Page Button */}
-        <div className="relative z-10 shrink-0">
+        <div className="relative z-10 shrink-0 self-start md:self-auto">
           <button
             onClick={() => navigate("/")}
-            className="cursor-pointer bg-white text-slate-900 hover:bg-slate-100 font-bold text-xs px-5 py-3 rounded-xl transition duration-150 inline-flex items-center gap-2 shadow-md shadow-black/10"
+            className="cursor-pointer bg-white text-slate-900 hover:bg-slate-100 font-bold text-xs px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl transition duration-150 inline-flex items-center gap-2 shadow-md shadow-black/10"
           >
-            <Home size={15} className="text-indigo-600" />
-            <span>Go to Main Home Page</span>
+            <Home size={15} className="text-indigo-600 shrink-0" />
+            <span className="whitespace-nowrap">Go to Main Home Page</span>
           </button>
         </div>
         
-        <div className="absolute right-4 bottom-[-2rem] opacity-5 font-black text-[10rem] md:text-[14rem] pointer-events-none select-none">
+        <div className="absolute right-4 bottom-[-2rem] opacity-5 font-black text-[8rem] sm:text-[10rem] md:text-[14rem] pointer-events-none select-none">
           LMS
         </div>
       </div>
 
       {/* 2. OVERVIEW STATS CARDS GRID */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         
-        <div className="bg-white p-4 rounded-2xl border border-slate-200/60 shadow-sm flex items-center space-x-3.5">
-          <div className="p-2.5 bg-indigo-50 text-indigo-600 rounded-xl shrink-0">
-            <BookOpen size={20} />
+        <div className="bg-white p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-slate-200/60 shadow-sm flex items-center space-x-3">
+          <div className="p-2 sm:p-2.5 bg-indigo-50 text-indigo-600 rounded-xl shrink-0">
+            <BookOpen size={18} className="sm:w-5 sm:h-5" />
           </div>
-          <div>
-            <p className="text-[10px] font-black text-slate-400 uppercase tracking-wide">Enrolled</p>
-            <p className="text-lg font-black text-slate-800">{activeCoursesCount} Courses</p>
-          </div>
-        </div>
-
-        <div className="bg-white p-4 rounded-2xl border border-slate-200/60 shadow-sm flex items-center space-x-3.5">
-          <div className="p-2.5 bg-emerald-50 text-emerald-600 rounded-xl shrink-0">
-            <CheckCircle size={20} />
-          </div>
-          <div>
-            <p className="text-[10px] font-black text-slate-400 uppercase tracking-wide">Completed</p>
-            <p className="text-lg font-black text-slate-800">0 Finished</p>
+          <div className="min-w-0 flex-1">
+            <p className="text-[9px] sm:text-[10px] font-black text-slate-400 uppercase tracking-wide truncate">Enrolled</p>
+            <p className="text-xs sm:text-lg font-black text-slate-800 truncate">{activeCoursesCount} Courses</p>
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded-2xl border border-slate-200/60 shadow-sm flex items-center space-x-3.5">
-          <div className="p-2.5 bg-amber-50 text-amber-600 rounded-xl shrink-0">
-            <Clock size={20} />
+        <div className="bg-white p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-slate-200/60 shadow-sm flex items-center space-x-3">
+          <div className="p-2 sm:p-2.5 bg-emerald-50 text-emerald-600 rounded-xl shrink-0">
+            <CheckCircle size={18} className="sm:w-5 sm:h-5" />
           </div>
-          <div>
-            <p className="text-[10px] font-black text-slate-400 uppercase tracking-wide">Study Time</p>
-            <p className="text-lg font-black text-slate-800">12.0 Hrs</p>
+          <div className="min-w-0 flex-1">
+            <p className="text-[9px] sm:text-[10px] font-black text-slate-400 uppercase tracking-wide truncate">Completed</p>
+            <p className="text-xs sm:text-lg font-black text-slate-800 truncate">0 Finished</p>
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded-2xl border border-slate-200/60 shadow-sm flex items-center space-x-3.5">
-          <div className="p-2.5 bg-violet-50 text-violet-600 rounded-xl shrink-0">
-            <Award size={20} />
+        <div className="bg-white p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-slate-200/60 shadow-sm flex items-center space-x-3">
+          <div className="p-2 sm:p-2.5 bg-amber-50 text-amber-600 rounded-xl shrink-0">
+            <Clock size={18} className="sm:w-5 sm:h-5" />
           </div>
-          <div>
-            <p className="text-[10px] font-black text-slate-400 uppercase tracking-wide">Certificates</p>
-            <p className="text-lg font-black text-slate-800">0 Earned</p>
+          <div className="min-w-0 flex-1">
+            <p className="text-[9px] sm:text-[10px] font-black text-slate-400 uppercase tracking-wide truncate">Study Time</p>
+            <p className="text-xs sm:text-lg font-black text-slate-800 truncate">12.0 Hrs</p>
+          </div>
+        </div>
+
+        <div className="bg-white p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-slate-200/60 shadow-sm flex items-center space-x-3">
+          <div className="p-2 sm:p-2.5 bg-violet-50 text-violet-600 rounded-xl shrink-0">
+            <Award size={18} className="sm:w-5 sm:h-5" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="text-[9px] sm:text-[10px] font-black text-slate-400 uppercase tracking-wide truncate">Certificates</p>
+            <p className="text-xs sm:text-lg font-black text-slate-800 truncate">0 Earned</p>
           </div>
         </div>
 
       </div>
 
       {/* 3. LOWER SECTION (RESUME LEARNING & EXPLORE STORE CTA) */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         
         {/* Quick Resume Card */}
-        <div className="lg:col-span-2 bg-white border border-slate-200/60 p-6 rounded-2xl shadow-sm flex flex-col justify-between space-y-4">
+        <div className="lg:col-span-2 bg-white border border-slate-200/60 p-4 sm:p-6 rounded-2xl shadow-sm flex flex-col justify-between space-y-4">
           <div className="space-y-2">
-            <span className="text-[10px] font-black uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-md">Quick Action</span>
-            <h3 className="text-lg font-black text-slate-900 tracking-tight">Resume Your Learning</h3>
-            <p className="text-xs text-slate-500 font-medium leading-relaxed">
+            <span className="text-[10px] font-black uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-md inline-block">Quick Action</span>
+            <h3 className="text-base sm:text-lg font-black text-slate-900 tracking-tight break-words">Resume Your Learning</h3>
+            <p className="text-xs text-slate-500 font-medium leading-relaxed break-words">
               {activeCoursesCount > 0 
                 ? `Aapka recent active course "${resumeCourseName}" hai. Wahan se continue karne ke liye niche click karein.`
                 : "Aapne abhi tak koi course enroll nahi kiya hai. Explore store me jakar naye courses join karein."}
@@ -146,32 +146,32 @@ const StudentDashboardHome = () => {
             {activeCoursesCount > 0 && resumeCourseId ? (
               <button 
                 onClick={() => navigate(`/studentdashboard/courseviewer/${resumeCourseId}`)}
-                className="cursor-pointer bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs px-4 py-3 rounded-xl transition duration-150 inline-flex items-center gap-2 shadow-sm shadow-indigo-600/10"
+                className="cursor-pointer w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs px-5 py-3 rounded-xl transition duration-150 inline-flex items-center justify-center sm:justify-start gap-2 shadow-sm shadow-indigo-600/10"
               >
-                <span>Continue Course</span> <ArrowRight size={14} />
+                <span>Continue Course</span> <ArrowRight size={14} className="shrink-0" />
               </button>
             ) : (
               <button 
                 onClick={() => navigate("/studentdashboard/buycourse")}
-                className="cursor-pointer bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs px-4 py-3 rounded-xl transition duration-150 inline-flex items-center gap-2 shadow-sm shadow-indigo-600/10"
+                className="cursor-pointer w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs px-5 py-3 rounded-xl transition duration-150 inline-flex items-center justify-center sm:justify-start gap-2 shadow-sm shadow-indigo-600/10"
               >
-                <span>Explore Courses Store</span> <ArrowRight size={14} />
+                <span>Explore Courses Store</span> <ArrowRight size={14} className="shrink-0" />
               </button>
             )}
           </div>
         </div>
 
         {/* Platform Announcements / Notice Box */}
-        <div className="bg-white border border-slate-200/60 p-6 rounded-2xl shadow-sm space-y-4 flex flex-col justify-between">
+        <div className="bg-white border border-slate-200/60 p-4 sm:p-6 rounded-2xl shadow-sm space-y-4 flex flex-col justify-between">
           <div className="space-y-3">
             <h3 className="text-base font-black text-slate-900 tracking-tight">Platform Updates</h3>
             <div className="space-y-2.5">
               <div className="p-3 bg-slate-50 border border-slate-100 rounded-xl space-y-1">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-slate-800">New Modules Live</span>
-                  <span className="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">New</span>
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs font-bold text-slate-800 truncate">New Modules Live</span>
+                  <span className="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded shrink-0">New</span>
                 </div>
-                <p className="text-[11px] text-slate-500 font-medium">Advanced React Hooks & Performance optimization modules are now available.</p>
+                <p className="text-[11px] text-slate-500 font-medium break-words">Advanced React Hooks & Performance optimization modules are now available.</p>
               </div>
             </div>
           </div>

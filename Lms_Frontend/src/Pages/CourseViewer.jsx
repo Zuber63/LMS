@@ -356,7 +356,6 @@ const CourseViewer = () => {
       if (resData.success) {
         toast.success("Review submitted and saved successfully! ⭐");
 
-        // Fetch user info from localStorage to display instantly in the reviews list
         const userLocal = JSON.parse(localStorage.getItem("user")) || {};
         const newReviewObj = {
           _id: resData.data?._id || Date.now().toString(),
@@ -393,9 +392,9 @@ const CourseViewer = () => {
   }
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 md:px-6 py-4 flex flex-col lg:flex-row gap-6 h-[calc(100vh-100px)] overflow-hidden">
+    <div className="w-full max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-3 sm:py-4 flex flex-col lg:flex-row gap-4 sm:gap-6 lg:h-[calc(100vh-100px)] overflow-y-auto lg:overflow-hidden">
       {/* LEFT PORTION (VIDEO PLAYER & DETAILS) */}
-      <div className="flex-1 flex flex-col h-full overflow-y-auto pr-0 lg:pr-2 space-y-5 scrollbar-thin">
+      <div className="flex-1 flex flex-col h-full lg:overflow-y-auto pr-0 lg:pr-2 space-y-4 sm:space-y-5 scrollbar-thin">
         {/* TOP BAR WITH PROGRESS % & BAR */}
         <div className="flex flex-col gap-2 bg-white p-3 border border-slate-200/60 rounded-xl shadow-3xs">
           <div className="flex items-center justify-between">
@@ -428,6 +427,7 @@ const CourseViewer = () => {
               src={currentVideo.videoUrl}
               controls
               autoPlay
+              playsInline
               onPlay={() => {
                 if (videoRef.current)
                   videoRef.current.playbackRate = playbackSpeed;
@@ -436,14 +436,14 @@ const CourseViewer = () => {
               className="w-full h-full object-contain"
             />
           ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center text-slate-400">
+            <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 p-4 text-center">
               <Play size={40} className="animate-pulse mb-2 text-indigo-500" />
               <p className="text-xs font-bold">
                 No lecture selected. Click sidebar syllabus to play.
               </p>
             </div>
           )}
-          <div className="absolute top-4 right-4 bg-slate-900/90 backdrop-blur-md px-2.5 py-1.5 rounded-xl border border-slate-800/80 flex items-center gap-2 transition opacity-0 group-hover:opacity-100 duration-200 z-10">
+          <div className="absolute top-3 right-3 sm:top-4 sm:right-4 bg-slate-900/90 backdrop-blur-md px-2.5 py-1.5 rounded-xl border border-slate-800/80 flex items-center gap-2 transition opacity-100 sm:opacity-0 sm:group-hover:opacity-100 duration-200 z-10">
             <Gauge size={12} className="text-indigo-400" />
             <select
               value={playbackSpeed}
@@ -472,7 +472,7 @@ const CourseViewer = () => {
             <h2 className="text-xs md:text-sm font-black text-slate-800 leading-snug tracking-tight truncate">
               {currentVideo ? currentVideo.title : "Initialization Completed"}
             </h2>
-            <p className="text-[10px] font-bold text-slate-400">
+            <p className="text-[10px] font-bold text-slate-400 truncate">
               Track: {courseData?.courseName} • Instructor:{" "}
               {courseData?.instructor?.firstName}{" "}
               {courseData?.instructor?.lastName}
@@ -480,7 +480,7 @@ const CourseViewer = () => {
           </div>
           <button
             onClick={() => handleNextLectureLoad(true)}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs px-5 py-3 rounded-xl flex items-center justify-center gap-2 shadow-md shadow-indigo-600/10 cursor-pointer transition shrink-0"
+            className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs px-5 py-3 rounded-xl flex items-center justify-center gap-2 shadow-md shadow-indigo-600/10 cursor-pointer transition shrink-0"
           >
             {currentVideo &&
             completedLectures.includes(String(currentVideo.id)) ? (
@@ -497,12 +497,12 @@ const CourseViewer = () => {
         </div>
 
         {/* TAB CONTROLLER */}
-        <div className="border-b border-slate-200 flex gap-5 pt-2">
+        <div className="border-b border-slate-200 flex gap-4 sm:gap-5 pt-2 overflow-x-auto scrollbar-none">
           {["description", "announcements", "reviews"].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`pb-2.5 text-xs font-black uppercase tracking-wider border-b-2 transition cursor-pointer ${
+              className={`pb-2.5 text-xs font-black uppercase tracking-wider border-b-2 transition cursor-pointer whitespace-nowrap ${
                 activeTab === tab
                   ? "border-indigo-600 text-indigo-600"
                   : "border-transparent text-slate-400 hover:text-slate-600"
@@ -518,7 +518,7 @@ const CourseViewer = () => {
         </div>
 
         {/* TAB CONTENT VIEWS */}
-        <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-xs text-xs text-slate-600 leading-relaxed font-medium">
+        <div className="bg-white border border-slate-200 p-4 sm:p-5 rounded-2xl shadow-xs text-xs text-slate-600 leading-relaxed font-medium">
           {activeTab === "description" && (
             <div className="space-y-2">
               <h3 className="font-bold text-slate-800">About this course</h3>
@@ -580,7 +580,7 @@ const CourseViewer = () => {
                   </div>
                 </div>
 
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <input
                     type="text"
                     placeholder="Write honest feedback here..."
@@ -590,7 +590,7 @@ const CourseViewer = () => {
                   />
                   <button
                     type="submit"
-                    className="bg-slate-900 hover:bg-slate-800 text-white font-black text-xs px-4 rounded-xl transition cursor-pointer"
+                    className="bg-slate-900 hover:bg-slate-800 text-white font-black text-xs py-2.5 sm:py-0 px-4 rounded-xl transition cursor-pointer"
                   >
                     Submit
                   </button>
@@ -637,7 +637,7 @@ const CourseViewer = () => {
       </div>
 
       {/* RIGHT SIDEBAR (SYLLABUS & NOTES) */}
-      <div className="w-full lg:w-80 h-full bg-white border border-slate-200/80 rounded-2xl flex flex-col overflow-hidden shadow-sm shrink-0">
+      <div className="w-full lg:w-80 h-[450px] lg:h-full bg-white border border-slate-200/80 rounded-2xl flex flex-col overflow-hidden shadow-sm shrink-0">
         <div className="grid grid-cols-2 border-b border-slate-100 bg-slate-50 text-center shrink-0">
           <button
             onClick={() => setSidebarTab("syllabus")}

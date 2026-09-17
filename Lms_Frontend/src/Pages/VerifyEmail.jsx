@@ -14,7 +14,7 @@ function VerifyEmail() {
 
   // 6 Digits OTP Array State
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
-  const [timer, setTimer] = useState(59); // Countdown timer in seconds
+  const [timer, setTimer] = useState(300); // 5 Minutes countdown timer in seconds (5 * 60)
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   
@@ -28,6 +28,13 @@ function VerifyEmail() {
     }, 1000);
     return () => clearInterval(interval);
   }, [timer]);
+
+  // Format seconds to MM:SS (e.g., 05:00)
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  };
 
   // Security Gate: Agar koi bina signup kiye direct is page par aaye
   useEffect(() => {
@@ -102,7 +109,7 @@ function VerifyEmail() {
           autoClose: 3000,
         });
 
-        // 3 seconds baad login page par navigation
+        // 1 second baad login page par navigation
         setTimeout(() => {
           navigate("/signin");
         }, 1000);
@@ -126,9 +133,6 @@ function VerifyEmail() {
   const handleResend = async () => {
     setError("");
     try {
-      console.log("Triggering Resend API for:", signupData?.email);
-      
-      // Resend fetch route handler (apne route ke hisab se change kar lena)
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/send-otp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -139,7 +143,7 @@ function VerifyEmail() {
 
       if (res.ok) {
         toast.success(result.message || "A fresh OTP has been sent! Check inbox.");
-        setTimer(59); // Reset countdown back to 59s
+        setTimer(300); // Reset countdown back to 5 minutes (300s)
         setOtp(['', '', '', '', '', '']); // Clear inputs
         if(inputRefs.current[0]) inputRefs.current[0].focus();
       } else {
@@ -153,47 +157,47 @@ function VerifyEmail() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-8 sm:py-12 px-3 sm:px-6 lg:px-8 overflow-x-hidden">
       {/* Toast Container standard inclusion */}
       <ToastContainer position="top-right" autoClose={4000} hideProgressBar={false} newestOnTop closeOnClick pauseOnFocusLoss draggable pauseOnHover />
       
       {/* Security Brand Icon Header */}
-      <div className="sm:mx-auto sm:w-full sm:max-w-md text-center space-y-3 px-4">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md text-center space-y-3 px-2">
         <div className="inline-flex items-center justify-center bg-indigo-600 p-2.5 rounded-2xl text-white shadow-md shadow-indigo-100">
           <ShieldCheck size={28} />
         </div>
-        <h2 className="text-3xl font-black text-slate-900 tracking-tight">
+        <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight break-words">
           Verify your email
         </h2>
-        <p className="text-sm text-slate-500 max-w-sm mx-auto">
-          We have sent a 6-digit secure verification code to <span className="font-semibold text-indigo-600">{signupData?.email || "your***@mail.com"}</span>
+        <p className="text-xs sm:text-sm text-slate-500 max-w-sm mx-auto break-words px-1">
+          We have sent a 6-digit secure verification code to <span className="font-semibold text-indigo-600 break-all">{signupData?.email || "your***@mail.com"}</span>
         </p>
       </div>
 
       {/* Main OTP Container Box */}
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md px-4">
-        <div className="bg-white py-8 px-4 shadow-sm border border-slate-200/60 sm:rounded-3xl sm:px-10 space-y-6">
+      <div className="mt-6 sm:mt-8 sm:mx-auto sm:w-full sm:max-w-md px-2 sm:px-4">
+        <div className="bg-white py-6 px-3.5 sm:py-8 sm:px-10 shadow-sm border border-slate-200/60 rounded-2xl sm:rounded-3xl space-y-5 sm:space-y-6">
           
-          <div className="flex justify-center my-2 text-indigo-500">
-            <MailOpen size={48} className="animate-bounce" />
+          <div className="flex justify-center my-1 sm:my-2 text-indigo-500">
+            <MailOpen size={40} className="sm:w-12 sm:h-12 animate-bounce" />
           </div>
 
           {/* Dynamic Error Prompt Wrapper */}
           {error && (
-            <div className="text-xs font-bold text-rose-500 bg-rose-50 border border-rose-100 p-3.5 rounded-xl text-center">
+            <div className="text-xs font-bold text-rose-500 bg-rose-50 border border-rose-100 p-3 rounded-xl text-center break-words">
               {error}
             </div>
           )}
 
-          <form className="space-y-6" onSubmit={handleSubmit}>
+          <form className="space-y-5 sm:space-y-6" onSubmit={handleSubmit}>
             
             {/* --- 6-DIGIT EXPANDED OTP DIGIT SLOTS --- */}
             <div className="space-y-2">
-              <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wide text-center block">
+              <label className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wide text-center block">
                 Enter Verification Code
               </label>
               
-              <div className="flex justify-between items-center gap-2 pt-2">
+              <div className="flex justify-between items-center gap-1 sm:gap-2 pt-1">
                 {otp.map((data, index) => (
                   <input
                     key={index}
@@ -205,7 +209,7 @@ function VerifyEmail() {
                     onChange={(e) => handleChange(e.target, index)}
                     onKeyDown={(e) => handleKeyDown(e, index)}
                     onFocus={(e) => e.target.select()}
-                    className={`w-12 h-12 bg-white border-2 rounded-xl text-center text-lg font-black text-slate-800 focus:outline-none focus:ring-1 transition-all shadow-sm ${
+                    className={`w-10 h-10 sm:w-12 sm:h-12 bg-white border-2 rounded-xl text-center text-base sm:text-lg font-black text-slate-800 focus:outline-none focus:ring-1 transition-all shadow-sm ${
                       error ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-500' : 'border-slate-200 focus:border-indigo-600 focus:ring-indigo-600'
                     }`}
                   />
@@ -214,10 +218,10 @@ function VerifyEmail() {
             </div>
 
             {/* Countdown / Resend Logic */}
-            <div className="flex items-center justify-between text-xs px-1">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs px-1">
               <span className="text-slate-500 font-medium">
                 {timer > 0 ? (
-                  <span>Resend code in <strong className="text-indigo-600">{timer}s</strong></span>
+                  <span>Resend code in <strong className="text-indigo-600 font-bold">{formatTime(timer)}</strong></span>
                 ) : (
                   <span className="text-rose-500 font-semibold">Code expired</span>
                 )}
@@ -227,26 +231,26 @@ function VerifyEmail() {
                 type="button"
                 disabled={timer > 0 || loading}
                 onClick={handleResend}
-                className={`inline-flex items-center space-x-1 font-bold transition-colors focus:outline-none ${
+                className={`inline-flex items-center space-x-1 font-bold transition-colors focus:outline-none self-start sm:self-auto ${
                   timer > 0 || loading
                     ? 'text-slate-300 cursor-not-allowed' 
                     : 'text-indigo-600 hover:text-indigo-700 underline underline-offset-2 cursor-pointer'
                 }`}
               >
-                <RefreshCw size={12} className={timer === 0 && !loading ? 'animate-spin' : ''} />
+                <RefreshCw size={12} className={timer === 0 && !loading ? 'animate-spin shrink-0' : 'shrink-0'} />
                 <span>Resend OTP</span>
               </button>
             </div>
 
             {/* Verification Processing CTA */}
-            <div className="pt-2">
+            <div className="pt-1 sm:pt-2">
               <button
                 type="submit"
                 disabled={loading}
-                className={`w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm py-3.5 rounded-xl transition shadow-md shadow-indigo-100 flex items-center justify-center space-x-2 group ${loading ? 'opacity-75 cursor-not-allowed' : 'cursor-pointer'}`}
+                className={`w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm py-3 sm:py-3.5 rounded-xl transition shadow-md shadow-indigo-100 flex items-center justify-center space-x-2 group ${loading ? 'opacity-75 cursor-not-allowed' : 'cursor-pointer'}`}
               >
                 <span>{loading ? "Verifying..." : "Verify & Activate Account"}</span>
-                {!loading && <ArrowRight size={16} className="transform group-hover:translate-x-1 transition-transform" />}
+                {!loading && <ArrowRight size={16} className="transform group-hover:translate-x-1 transition-transform shrink-0" />}
               </button>
             </div>
 

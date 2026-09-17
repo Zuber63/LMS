@@ -108,7 +108,7 @@ exports.verifyPayment = async (req, res) => {
             
             const updatedUser = await User.findByIdAndUpdate(
                 userId,
-                { $push: { enrolledCourses: { $each: courses } } },
+                { $push: { enrolledCourses: {$each: courses } } },
                 { new: true }
             );
 
@@ -121,53 +121,55 @@ exports.verifyPayment = async (req, res) => {
             const courseNames = purchasedCourses.map(c => c.courseName).join(", ");
             const totalAmountPaid = purchasedCourses.reduce((sum, c) => sum + Number(c.price || 0), 0);
 
-            try {
-                if (updatedUser && updatedUser.email) {
-                    await mailSender(
-                        updatedUser.email, 
-                        "🎉 Course Purchase Successful - LMS Portal", 
-                        `
-                        <div style="background-color: #f8fafc; padding: 30px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-                            <div style="max-width: 500px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
-                                
-                                <!-- Header -->
-                                <div style="background-color: #0f172a; padding: 24px; text-align: center;">
-                                    <h1 style="color: #ffffff; margin: 0; font-size: 20px; font-weight: 900;">🎓 <span style="color: #6366f1;">LMS</span> Portal</h1>
-                                </div>
-
-                                <!-- Body Content -->
-                                <div style="padding: 30px; text-align: left;">
-                                    <h2 style="color: #1e293b; font-size: 18px; font-weight: 800; margin-top: 0; text-align: center;">Payment Successful! 🎉</h2>
-                                    
-                                    <p style="color: #64748b; font-size: 13px; line-height: 1.5; margin-bottom: 20px;">Hi <strong>${updatedUser.firstName || "Student"}</strong>, aapka payment successfully verify ho gaya hai aur course aapke account me add kar diya gaya hai.</p>
-                                    
-                                    <!-- Details Card -->
-                                    <div style="background-color: #f1f5f9; border-radius: 12px; padding: 16px; margin-bottom: 24px; border: 1px solid #e2e8f0;">
-                                        <p style="color: #334155; font-size: 13px; margin: 6px 0;"><strong>📚 Course(s):</strong> ${courseNames}</p>
-                                        <p style="color: #334155; font-size: 13px; margin: 6px 0;"><strong>💰 Total Paid:</strong> ₹${totalAmountPaid}</p>
-                                        <p style="color: #334155; font-size: 13px; margin: 6px 0;"><strong>🆔 Order ID:</strong> ${razorpay_order_id}</p>
-                                    </div>
-
-                                    <!-- CTA Button -->
-                                    <div style="text-align: center; margin-bottom: 20px;">
-                                        <a href="http://localhost:5173/studentdashboard/mycourses" style="display: inline-block; background-color: #4f46e5; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 10px; font-size: 14px; font-weight: bold; box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);">Go to My Courses</a>
-                                    </div>
-
-                                    <p style="color: #94a3b8; font-size: 11px; text-align: center; margin: 0;">Agar aapko koi bhi sawal ho toh humein support par contact karein. Happy Learning! 🚀</p>
-                                </div>
-                            </div>
-                        </div>
-                        `
-                    );
-                }
-            } catch (emailError) {
-                console.error("Failed to send purchase confirmation email:", emailError);
-            }
-
-            return res.status(200).json({
+            // 🚀 1. TURANT SUCCESS RESPONSE BHEJ DO (Frontend ko delay nahi milega)
+            res.status(200).json({
                 success: true,
                 message: "Payment Verified & Course Enrolled Successfully! 🎉",
             });
+
+            // 2. Email ko background me bhej do (Non-blocking)
+            if (updatedUser && updatedUser.email) {
+                const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+                
+                mailSender(
+                    updatedUser.email, 
+                    "🎉 Course Purchase Successful - LMS Portal", 
+                    `
+                    <div style="background-color: #f8fafc; padding: 30px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                        <div style="max-width: 500px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+                            
+                            <!-- Header -->
+                            <div style="background-color: #0f172a; padding: 24px; text-align: center;">
+                                <h1 style="color: #ffffff; margin: 0; font-size: 20px; font-weight: 900;">🎓 <span style="color: #6366f1;">LMS</span> Portal</h1>
+                            </div>
+
+                            <!-- Body Content -->
+                            <div style="padding: 30px; text-align: left;">
+                                <h2 style="color: #1e293b; font-size: 18px; font-weight: 800; margin-top: 0; text-align: center;">Payment Successful! 🎉</h2>
+                                
+                                <p style="color: #64748b; font-size: 13px; line-height: 1.5; margin-bottom: 20px;">Hi <strong>${updatedUser.firstName || "Student"}</strong>, aapka payment successfully verify ho gaya hai aur course aapke account me add kar diya gaya hai.</p>
+                                
+                                <!-- Details Card -->
+                                <div style="background-color: #f1f5f9; border-radius: 12px; padding: 16px; margin-bottom: 24px; border: 1px solid #e2e8f0;">
+                                    <p style="color: #334155; font-size: 13px; margin: 6px 0;"><strong>📚 Course(s):</strong> ${courseNames}</p>
+                                    <p style="color: #334155; font-size: 13px; margin: 6px 0;"><strong>💰 Total Paid:</strong> ₹${totalAmountPaid}</p>
+                                    <p style="color: #334155; font-size: 13px; margin: 6px 0;"><strong>🆔 Order ID:</strong> ${razorpay_order_id}</p>
+                                </div>
+
+                                <!-- CTA Button -->
+                                <div style="text-align: center; margin-bottom: 20px;">
+                                    <a href="${frontendUrl}/studentdashboard/mycourses" style="display: inline-block; background-color: #4f46e5; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 10px; font-size: 14px; font-weight: bold; box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);">Go to My Courses</a>
+                                </div>
+
+                                <p style="color: #94a3b8; font-size: 11px; text-align: center; margin: 0;">Agar aapko koi bhi sawal ho toh humein support par contact karein. Happy Learning! 🚀</p>
+                            </div>
+                        </div>
+                    </div>
+                    `
+                ).catch((emailError) => {
+                    console.error("Failed to send purchase confirmation email:", emailError);
+                });
+            }
 
         } else {
             return res.status(400).json({
