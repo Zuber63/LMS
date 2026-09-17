@@ -6,6 +6,8 @@ exports.mailSender=async(email,title,body)=>{
     try{
         const transporter=nodemailer.createTransport({
             host:"smtp.gmail.com",
+            port: 465,
+            secure: true,
             auth:{
                 user:process.env.MAIL_USER,
                 pass:process.env.MAIL_PASS
@@ -18,7 +20,7 @@ exports.mailSender=async(email,title,body)=>{
             subject:`${title}`,
             html:`${body}`
         })
-        console.log(info)
+       console.log("Email sent successfully: ", info.messageId);
         return info;
 
     }
