@@ -40,7 +40,7 @@ const Testimonials = () => {
     const fetchRatings = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/course/getAllRatings",
+          `${import.meta.env.VITE_API_URL}/api/course/getAllRatings`,
         );
         const result = await response.json();
 

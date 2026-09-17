@@ -17,7 +17,7 @@ const BuyCourse = () => {
   const loadPageData = async () => {
     try {
       // A. Fetch All Store Courses
-      const response = await fetch("http://localhost:5000/api/course/getAllCourses");
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/course/getAllCourses`);
       const data = await response.json();
 
       if (data?.courses) {
@@ -30,7 +30,7 @@ const BuyCourse = () => {
       // B. Fetch Student Enrolled Courses (If logged in)
       const token = localStorage.getItem("token");
       if (token) {
-        const profileRes = await fetch("http://localhost:5000/api/user/getuser", {
+        const profileRes = await fetch(`${import.meta.env.VITE_API_URL}/api/user/getuser`, {
           method: "GET",
           headers: {
             "Authorization": `Bearer ${token}`

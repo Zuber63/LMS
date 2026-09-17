@@ -29,7 +29,7 @@ const MyCourses = () => {
         return;
       }
 
-      const response = await fetch("http://localhost:5000/api/user/getuser", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/user/getuser`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,

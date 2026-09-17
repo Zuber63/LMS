@@ -49,7 +49,7 @@ const CreateCourseForm = ({ onNextStage }) => {
       setIsDataLoading(true);
       try {
         const response = await fetch(
-          `http://localhost:5000/api/course/getSingleCourse/${courseId}`,
+          `${import.meta.env.VITE_API_URL}/api/course/getSingleCourse/${courseId}`,
           {
             method: "GET",
             headers: { Authorization: `Bearer ${token}` },
@@ -160,8 +160,8 @@ const CreateCourseForm = ({ onNextStage }) => {
       }
 
       const targetUrl = isEditMode
-        ? "http://localhost:5000/api/course/updateCourse"
-        : "http://localhost:5000/api/course/createCourse";
+        ? `${import.meta.env.VITE_API_URL}/api/course/updateCourse`
+        : `${import.meta.env.VITE_API_URL}/api/course/createCourse`;
 
       const targetMethod = isEditMode ? "PUT" : "POST";
       const response = await fetch(targetUrl, {
@@ -171,7 +171,6 @@ const CreateCourseForm = ({ onNextStage }) => {
       });
 
       const jsonResponse = await response.json();
-
 
       if (response.ok) {
         toast.dismiss(loadingToastId);

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+
 import { useForm } from "react-hook-form";
+
 import {
   Mail,
   Lock,
@@ -9,8 +11,11 @@ import {
   Eye,
   EyeOff,
 } from "lucide-react";
+
 import { useNavigate } from "react-router-dom";
+
 import { ToastContainer, toast } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
@@ -34,7 +39,7 @@ const Login = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/user/login", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -92,9 +97,11 @@ const Login = () => {
         <div className="inline-flex items-center justify-center bg-indigo-600 p-2.5 rounded-2xl text-white shadow-md shadow-indigo-100">
           <GraduationCap size={28} />
         </div>
+
         <h2 className="text-3xl font-black text-slate-900 tracking-tight">
           Welcome back
         </h2>
+
         <p className="text-sm text-slate-500">
           Enter your details to access your account.
         </p>
@@ -102,6 +109,7 @@ const Login = () => {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md px-4">
         <div className="bg-white py-8 px-4 shadow-sm border border-slate-200/60 sm:rounded-3xl sm:px-10 space-y-6">
+
           {/* Google Quick Login */}
           <button
             type="button"
@@ -114,6 +122,7 @@ const Login = () => {
                 d="M12.24 10.285V14.4h6.887c-.275 1.565-1.88 4.604-6.887 4.604-4.33 0-7.866-3.577-7.866-8s3.536-8 7.866-8c2.46 0 4.105 1.025 5.047 1.926l3.227-3.227C18.241 1.483 15.48 0 12.24 0 5.58 0 0 5.58 0 12.24s5.58 12.24 12.24 12.24c6.96 0 11.57-4.894 11.57-11.79 0-.795-.085-1.4-.195-2.005H12.24z"
               />
             </svg>
+
             <span>Sign in with Google</span>
           </button>
 
@@ -121,22 +130,26 @@ const Login = () => {
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-slate-200" />
             </div>
+
             <div className="relative bg-white px-4 text-xs font-bold text-slate-400 uppercase tracking-wider">
               Or sign in with email
             </div>
           </div>
 
           <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
+
             {/* Email Field */}
             <div className="space-y-1.5">
               <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wide block">
                 Email Address
               </label>
+
               <div className="relative">
                 <Mail
                   size={16}
                   className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
                 />
+
                 <input
                   type="email"
                   disabled={loading}
@@ -144,7 +157,7 @@ const Login = () => {
                   {...register("email", {
                     required: "Email is required",
                     pattern: {
-                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      value: /^[A-Z0-9.\_%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                       message: "Invalid email address",
                     },
                   })}
@@ -155,6 +168,7 @@ const Login = () => {
                   }`}
                 />
               </div>
+
               {errors.email && (
                 <p className="text-xs font-semibold text-rose-500 mt-1">
                   {errors.email.message}
@@ -168,6 +182,7 @@ const Login = () => {
                 <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wide">
                   Password
                 </label>
+
                 <button
                   type="button"
                   onClick={() => navigate("/forgot-password")}
@@ -176,11 +191,13 @@ const Login = () => {
                   Forgot password?
                 </button>
               </div>
+
               <div className="relative">
                 <Lock
                   size={16}
                   className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
                 />
+
                 <input
                   type={showPassword ? "text" : "password"}
                   disabled={loading}
@@ -194,6 +211,7 @@ const Login = () => {
                       : "border-slate-200 focus:border-indigo-600"
                   }`}
                 />
+
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
@@ -202,6 +220,7 @@ const Login = () => {
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
+
               {errors.password && (
                 <p className="text-xs font-semibold text-rose-500 mt-1">
                   {errors.password.message}
@@ -214,9 +233,12 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className={`w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm py-3.5 rounded-xl transition shadow-md shadow-indigo-100 flex items-center justify-center space-x-2 group ${loading ? "opacity-70 cursor-not-allowed" : "cursor-pointer"}`}
+                className={`w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm py-3.5 rounded-xl transition shadow-md shadow-indigo-100 flex items-center justify-center space-x-2 group ${
+                  loading ? "opacity-70 cursor-not-allowed" : "cursor-pointer"
+                }`}
               >
                 <span>{loading ? "Signing in..." : "Sign In"}</span>
+
                 {!loading && (
                   <ArrowRight
                     size={16}
@@ -230,6 +252,7 @@ const Login = () => {
           {/* Footer Navigation link */}
           <div className="text-center text-sm text-slate-500 pt-2 border-t border-slate-100">
             Don't have an account?{" "}
+
             <button
               onClick={() => navigate("/signup")}
               className="font-bold text-indigo-600 hover:text-indigo-700 focus:outline-none"
@@ -237,6 +260,7 @@ const Login = () => {
               Sign up
             </button>
           </div>
+
         </div>
       </div>
     </div>

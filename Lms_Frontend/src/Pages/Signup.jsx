@@ -52,7 +52,7 @@ const Signup = () => {
     try {
       const finalData = { ...data, accountType };
 
-      const res = await fetch("http://localhost:5000/api/user/sendotp", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/sendotp`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

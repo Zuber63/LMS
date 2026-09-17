@@ -31,7 +31,7 @@ const InstructorHome = () => {
 
         // 1. Fetch Instructor Profile Details
         const profileRes = await fetch(
-          "http://localhost:5000/api/user/getuser",
+          `${import.meta.env.VITE_API_URL}/api/user/getuser`,
           {
             method: "GET",
             headers: {
@@ -49,7 +49,7 @@ const InstructorHome = () => {
         const instructorId = user?._id || profileResult?.data?._id;
         if (instructorId) {
           const coursesRes = await fetch(
-            `http://localhost:5000/api/course/getInstructorCourses/${instructorId}`,
+            `${import.meta.env.VITE_API_URL}/api/course/getInstructorCourses/${instructorId}`,
             {
               method: "GET",
               headers: {

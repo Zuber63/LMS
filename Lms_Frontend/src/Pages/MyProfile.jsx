@@ -50,7 +50,7 @@ const MyProfile = () => {
 
       setIsDataLoading(true);
       try {
-        const response = await fetch("http://localhost:5000/api/user/getUser", {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/user/getUser`, {
           method: "GET",
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -104,7 +104,7 @@ const MyProfile = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/profile/updateprofile",
+        `${import.meta.env.VITE_API_URL}/api/profile/updateprofile`,
         {
           method: "PUT",
           headers: {
@@ -160,7 +160,7 @@ const MyProfile = () => {
     setIsProcessing(true);
     try {
       const response = await fetch(
-        "http://localhost:5000/api/user/changepassword",
+        `${import.meta.env.VITE_API_URL}/api/user/changepassword`,
         {
           method: "PUT",
           headers: {

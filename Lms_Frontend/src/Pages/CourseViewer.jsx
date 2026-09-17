@@ -66,7 +66,7 @@ const CourseViewer = () => {
 
       // 1. Fetch User Data (contains courseProgress info)
       const responseuser = await fetch(
-        "http://localhost:5000/api/user/getuser",
+        `${import.meta.env.VITE_API_URL}/api/user/getuser`,
         {
           method: "GET",
           headers: {
@@ -108,7 +108,7 @@ const CourseViewer = () => {
 
       // 2. Fetch Single Course Data (Syllabus, Details, Reviews, etc.)
       const response = await fetch(
-        `http://localhost:5000/api/course/getSingleCourse/${courseId}`,
+        `${import.meta.env.VITE_API_URL}/api/course/getSingleCourse/${courseId}`,
         {
           method: "GET",
           headers: {
@@ -189,8 +189,8 @@ const CourseViewer = () => {
       }
 
       const url = isCompleting
-        ? "http://localhost:5000/api/course/updateCourseProgress"
-        : "http://localhost:5000/api/course/removeCourseProgress";
+        ? `${import.meta.env.VITE_API_URL}/api/course/updateCourseProgress`
+        : `${import.meta.env.VITE_API_URL}/api/course/removeCourseProgress`;
 
       const payload = {
         courseId: String(courseId),
@@ -336,7 +336,7 @@ const CourseViewer = () => {
       }
 
       const response = await fetch(
-        "http://localhost:5000/api/course/createRating",
+        `${import.meta.env.VITE_API_URL}/api/course/createRating`,
         {
           method: "POST",
           headers: {

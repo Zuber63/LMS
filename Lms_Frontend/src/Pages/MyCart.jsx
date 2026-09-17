@@ -75,7 +75,7 @@ const MyCart = () => {
       toast.info("Transaction initiate ho rahi hai... 💳", { autoClose: 1000 });
 
       // C. Backend Order API Trigger hit karo
-      const orderResponse = await fetch("http://localhost:5000/api/payment/capturePayment", {
+      const orderResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/payment/capturePayment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -105,7 +105,7 @@ console.log(orderData);
           toast.info("Payment authentication verify ho rahi hai...");
           
           // E. Verification API Endpoint callback hit loop
-          const verifyResponse = await fetch("http://localhost:5000/api/payment/verifyPayment", {
+          const verifyResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/payment/verifyPayment`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

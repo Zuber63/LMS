@@ -30,7 +30,7 @@ const CategoryShowcase = () => {
   useEffect(() => {
     const fetchCoursesAndExtractCategories = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/course/getAllCourses");
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/course/getAllCourses`);
         const result = await response.json();
         
         const courses = result.data || result.courses || result;

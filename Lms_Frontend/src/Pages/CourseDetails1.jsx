@@ -53,7 +53,7 @@ const CourseDetails1 = () => {
         }
 
         // 1. Fetch Single Course Details API
-        const response = await fetch(`http://localhost:5000/api/course/getSingleCourse/${courseId}`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/course/getSingleCourse/${courseId}`);
 
         if (!response.ok) {
           throw new Error(`Server Error: Status ${response.status}`);
@@ -80,7 +80,7 @@ const CourseDetails1 = () => {
         const token = localStorage.getItem("token");
         if (token) {
           try {
-            const profileRes = await fetch("http://localhost:5000/api/user/getuser", {
+            const profileRes = await fetch(`${import.meta.env.VITE_API_URL}/api/user/getuser`, {
               method: "GET",
               headers: {
                 "Authorization": `Bearer ${token}`

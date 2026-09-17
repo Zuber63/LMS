@@ -84,7 +84,7 @@ function VerifyEmail() {
       // Payload preparation
       const finalPayload = { ...signupData, otp: finalOtp };
 
-      const res = await fetch("http://localhost:5000/api/user/signup", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -129,7 +129,7 @@ function VerifyEmail() {
       console.log("Triggering Resend API for:", signupData?.email);
       
       // Resend fetch route handler (apne route ke hisab se change kar lena)
-      const res = await fetch("http://localhost:5000/api/user/send-otp", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/send-otp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: signupData?.email }),

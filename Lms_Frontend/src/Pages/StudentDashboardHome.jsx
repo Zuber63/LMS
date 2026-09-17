@@ -17,7 +17,7 @@ const StudentDashboardHome = () => {
           return;
         }
 
-        const res = await fetch("http://localhost:5000/api/user/getuser", {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/getuser`, {
           method: "GET",
           headers: {
             "Authorization": `Bearer ${token}`

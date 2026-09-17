@@ -44,7 +44,7 @@ const CourseDetails = () => {
 
         // 1. Fetch Course Details
         const res = await fetch(
-          `http://localhost:5000/api/course/getSingleCourse/${courseId}`,
+          `${import.meta.env.VITE_API_URL}/api/course/getSingleCourse/${courseId}`,
         );
         const result = await res.json();
         if (result && result.success) {
@@ -55,7 +55,7 @@ const CourseDetails = () => {
           const token = localStorage.getItem("token");
           if (token) {
             const profileRes = await fetch(
-              "http://localhost:5000/api/user/getuser",
+              `${import.meta.env.VITE_API_URL}/api/user/getuser`,
               {
                 method: "GET",
                 headers: {

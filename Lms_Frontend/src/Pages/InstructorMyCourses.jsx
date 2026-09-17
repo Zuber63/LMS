@@ -27,7 +27,7 @@ const InstructorMyCourses = () => {
     try {
       if (!user?._id) return;
       
-      const response = await fetch(`http://localhost:5000/api/course/getInstructorCourses/${user._id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/course/getInstructorCourses/${user._id}`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`
@@ -69,7 +69,7 @@ const InstructorMyCourses = () => {
 
     setIsDeleting(true);
     try {
-      const response = await fetch(`http://localhost:5000/api/course/deleteCourse/${courseToDelete.id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/course/deleteCourse/${courseToDelete.id}`, {
         method: "DELETE",
         headers: {
           "Authorization": `Bearer ${token}`

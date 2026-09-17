@@ -61,7 +61,7 @@ const CourseSyllabusForm = ({ onBack }) => {
 
       setIsDataLoading(true);
       try {
-        const response = await fetch(`http://localhost:5000/api/course/getSingleCourse/${courseId}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/course/getSingleCourse/${courseId}`, {
           method: "GET",
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -134,7 +134,7 @@ const CourseSyllabusForm = ({ onBack }) => {
       courseStatusFormData.append("courseId", courseId);
       courseStatusFormData.append("status", statusType); // "Draft" ya "Published"
 
-      await fetch("http://localhost:5000/api/course/updateCourse", {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/course/updateCourse`, {
         method: "PUT",
         headers: { Authorization: `Bearer ${token}` },
         body: courseStatusFormData,
@@ -143,7 +143,7 @@ const CourseSyllabusForm = ({ onBack }) => {
       // 🗑️ STEP 1: BACKEND CLEANUP FOR DELETED ITEMS
       if (isEditMode) {
         for (const subId of deletedSubSections) {
-          await fetch("http://localhost:5000/api/course/deleteSubsection", {
+          await fetch(`${import.meta.env.VITE_API_URL}/api/course/deleteSubsection`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
             body: JSON.stringify({ subSectionId: subId, courseId }),
@@ -151,7 +151,7 @@ const CourseSyllabusForm = ({ onBack }) => {
         }
 
         for (const secId of deletedSections) {
-          await fetch("http://localhost:5000/api/course/deleteSection", {
+          await fetch(`${import.meta.env.VITE_API_URL}/api/course/deleteSection`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
             body: JSON.stringify({ sectionId: secId, courseId }),
@@ -170,8 +170,8 @@ const CourseSyllabusForm = ({ onBack }) => {
         if (currentSectionId) sectionFormData.append("sectionId", currentSectionId);
 
         const sectionUrl = currentSectionId
-          ? "http://localhost:5000/api/course/updateSection" 
-          : "http://localhost:5000/api/course/createSection";
+          ? `${import.meta.env.VITE_API_URL}/api/course/updateSection` 
+          : `${import.meta.env.VITE_API_URL}/api/course/createSection`;
 
         const sectionMethod = currentSectionId ? "PUT" : "POST";
 
@@ -207,8 +207,8 @@ const CourseSyllabusForm = ({ onBack }) => {
             }
 
             const subUrl = currentSubId
-              ? "http://localhost:5000/api/course/updateSubsection" 
-              : "http://localhost:5000/api/course/createSubsection";
+              ? `${import.meta.env.VITE_API_URL}/api/course/updateSubsection` 
+              : `${import.meta.env.VITE_API_URL}/api/course/createSubsection`;
 
             const subMethod = currentSubId ? "PUT" : "POST";
 
