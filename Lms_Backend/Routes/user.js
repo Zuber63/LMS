@@ -2,7 +2,7 @@ const express = require("express");
 const routes = express.Router();
 
 const { signup, login, sendOTP, changePassword, getUser ,resetPasswordToken, resetPassword} = require("../Controllers/auth");
-const {auth}= require("../Middlewares/auth");
+const {auth}= require("../Middlewares/Auth");
 
 routes.post("/signup", signup);
 routes.post("/login", login);
